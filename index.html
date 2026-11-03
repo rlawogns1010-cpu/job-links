@@ -1,9 +1,9 @@
 <title>채용 관제 콘솔</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="claude:viewport-fit-sides" content="cover">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gugi&family=IBM+Plex+Sans+KR:wght@400;500;600&family=Share+Tech+Mono&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gugi&display=swap">
 <style>
-  /* 레이아웃: 심우주 관제 콘솔 — 채널 모듈 12기가 격자로 떠 있고, 한 기가 공고 사이트 하나 */
+  /* 레이아웃: 심우주 관제 콘솔 — 이름만 떠 있는 접안 모듈 12기 */
   :root {
     --void: #060a16;
     --panel: #0e1630;
@@ -13,113 +13,36 @@
     --signal-dim: #2b7f9e;
     --flare: #ffb547;
     --ion: #b98cff;
-    --text: #dbe7ff;
-    --text-dim: #7e92bd;
+    --text: #e6f1ff;
     --font-display: "Gugi", "Apple SD Gothic Neo", sans-serif;
-    --font-body: "IBM Plex Sans KR", "Apple SD Gothic Neo", system-ui, sans-serif;
-    --font-mono: "Share Tech Mono", ui-monospace, "Courier New", monospace;
     color-scheme: dark;
   }
 
+  html, body { height: 100%; }
+
   body {
-    min-height: 100%;
-    font-family: var(--font-body);
+    display: flex;
+    font-family: var(--font-display);
     color: var(--text);
     background:
-      radial-gradient(90% 60% at 50% -10%, rgba(92,225,255,.16) 0%, transparent 70%),
-      radial-gradient(70% 50% at 110% 20%, rgba(185,140,255,.12) 0%, transparent 70%),
+      radial-gradient(90% 55% at 50% -5%, rgba(92,225,255,.18) 0%, transparent 70%),
+      radial-gradient(70% 50% at 110% 25%, rgba(185,140,255,.14) 0%, transparent 70%),
       linear-gradient(var(--grid-line) 1px, transparent 1px) 0 0 / 100% 46px,
       linear-gradient(90deg, var(--grid-line) 1px, transparent 1px) 0 0 / 46px 100%,
       var(--void);
     -webkit-font-smoothing: antialiased;
   }
 
-  .wrap {
-    max-width: 680px;
-    margin: 0 auto;
-    padding-left: max(16px, env(safe-area-inset-left, 0px));
-    padding-right: max(16px, env(safe-area-inset-right, 0px));
-    padding-block: 30px 52px;
-  }
-
-  /* 헤더: 관제탑 상태 표시 */
-  header { display: flex; flex-direction: column; gap: 12px; }
-  .status-line {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-family: var(--font-mono);
-    font-size: 11px;
-    letter-spacing: .16em;
-    color: var(--signal-dim);
-    text-transform: uppercase;
-  }
-  .status-line .dot {
-    width: 7px; height: 7px; border-radius: 50%;
-    background: var(--signal);
-    box-shadow: 0 0 10px var(--signal);
-    animation: pulse 2.4s ease-in-out infinite;
-  }
-  .status-line .rule { flex: 1; height: 1px; background: linear-gradient(90deg, var(--signal-dim), transparent); }
-  @keyframes pulse { 0%, 100% { opacity: 1 } 50% { opacity: .25 } }
-
-  h1 {
-    margin: 0;
-    font-family: var(--font-display);
-    font-size: clamp(27px, 8vw, 42px);
-    line-height: 1.18;
-    letter-spacing: .01em;
-    text-wrap: balance;
-    color: #eaf4ff;
-    text-shadow: 0 0 22px rgba(92,225,255,.45);
-  }
-  .sub {
-    margin: 0;
-    max-width: 46ch;
-    font-size: 13px;
-    line-height: 1.75;
-    color: var(--text-dim);
-  }
-
-  /* 계기판 수치 */
-  .readout {
-    margin: 18px 0 0;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1px;
-    background: rgba(92,196,255,.16);
-    border: 1px solid rgba(92,196,255,.16);
-  }
-  .readout div {
-    min-width: 0;
-    background: rgba(14,22,48,.86);
-    padding: 9px 11px;
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-  }
-  .readout dt {
-    font-family: var(--font-mono);
-    font-size: 9.5px;
-    letter-spacing: .16em;
-    text-transform: uppercase;
-    color: var(--signal-dim);
-  }
-  .readout dd {
-    margin: 0;
-    font-family: var(--font-mono);
-    font-size: 15px;
-    color: var(--signal);
-    font-variant-numeric: tabular-nums;
-  }
-  .readout dd.flare { color: var(--flare); }
-  .readout dd.ion { color: var(--ion); }
-
   .bay {
-    margin-top: 22px;
+    width: 100%;
+    max-width: 680px;
+    margin: auto;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 10px;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+    padding-block: 24px;
   }
   @media (min-width: 520px) { .bay { grid-template-columns: repeat(3, 1fr); } }
 
@@ -127,13 +50,18 @@
   .mod {
     position: relative;
     display: flex;
-    flex-direction: column;
-    gap: 6px;
+    align-items: center;
+    justify-content: center;
     min-width: 0;
-    min-height: 104px;
-    padding: 12px 12px 13px;
+    min-height: 92px;
+    padding: 14px 14px 14px 18px;
+    text-align: center;
     text-decoration: none;
     color: var(--text);
+    font-size: clamp(16px, 4.6vw, 19px);
+    line-height: 1.3;
+    overflow-wrap: anywhere;
+    text-shadow: 0 0 16px rgba(92,225,255,.35);
     background:
       linear-gradient(160deg, rgba(92,225,255,.1) 0%, transparent 48%),
       linear-gradient(var(--panel-hi), var(--panel));
@@ -161,151 +89,33 @@
   .mod:focus-visible { outline: 2px solid var(--signal); outline-offset: 3px; }
   .mod:active { transform: translateY(0); }
 
-  .mod .code {
-    display: flex;
-    justify-content: space-between;
-    gap: 8px;
-    font-family: var(--font-mono);
-    font-size: 10px;
-    letter-spacing: .14em;
-    color: var(--signal-dim);
-  }
-  .mod .name {
-    font-family: var(--font-display);
-    font-size: clamp(15px, 4.4vw, 18px);
-    line-height: 1.3;
-    overflow-wrap: anywhere;
-  }
-  .mod .kind {
-    margin-top: auto;
-    font-family: var(--font-mono);
-    font-size: 10px;
-    letter-spacing: .1em;
-    color: var(--text-dim);
-  }
-
-  /* 채널 등급: 상시 포털 / 카페 중계 / 수동 관측 */
+  /* 채널 등급: 카페 중계 / 수동 관측 */
   .mod.relay { border-color: rgba(185,140,255,.3); }
   .mod.relay::before { background: #6c4da3; }
   .mod.relay:hover, .mod.relay:focus-visible { border-color: var(--ion); box-shadow: 0 0 0 1px rgba(185,140,255,.3), 0 10px 26px rgba(0,0,0,.6); }
   .mod.relay:hover::before, .mod.relay:focus-visible::before { background: var(--ion); box-shadow: 0 0 12px var(--ion); }
-  .mod.relay .code, .mod.relay .kind { color: #9b7ed6; }
 
   .mod.manual { border-color: rgba(255,181,71,.28); }
   .mod.manual::before { background: #99662a; }
   .mod.manual:hover, .mod.manual:focus-visible { border-color: var(--flare); box-shadow: 0 0 0 1px rgba(255,181,71,.3), 0 10px 26px rgba(0,0,0,.6); }
   .mod.manual:hover::before, .mod.manual:focus-visible::before { background: var(--flare); box-shadow: 0 0 12px var(--flare); }
-  .mod.manual .code, .mod.manual .kind { color: #c49250; }
-
-  footer {
-    margin-top: 26px;
-    border-top: 1px solid rgba(92,196,255,.16);
-    padding-top: 14px;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    font-family: var(--font-mono);
-    font-size: 11px;
-    line-height: 1.7;
-    letter-spacing: .04em;
-    color: var(--text-dim);
-  }
-  .legend { display: flex; flex-wrap: wrap; gap: 4px 14px; }
-  .legend span { display: inline-flex; align-items: center; gap: 6px; }
-  .legend i { width: 10px; height: 2px; display: inline-block; }
 
   @media (prefers-reduced-motion: reduce) {
-    .mod, .status-line .dot { transition: none; animation: none; }
+    .mod { transition: none; }
   }
 </style>
 
-<div class="wrap">
-  <header>
-    <div class="status-line">
-      <span class="dot" aria-hidden="true"></span>
-      <span>CH-LINK 관제 · 수신중</span>
-      <span class="rule" aria-hidden="true"></span>
-      <span>SEOUL / FIN-SEC</span>
-    </div>
-    <h1>채용 관제 콘솔</h1>
-    <p class="sub">금융·자산운용 공고가 올라오는 12개 채널. 모듈을 누르면 해당 채널로 접속합니다.</p>
-
-    <dl class="readout">
-      <div><dt>채널</dt><dd>12</dd></div>
-      <div><dt>카페 중계</dt><dd class="ion">04</dd></div>
-      <div><dt>수동 관측</dt><dd class="flare">03</dd></div>
-    </dl>
-  </header>
-
-  <nav class="bay">
-    <a class="mod" href="https://jasoseol.com/recruit" target="_blank" rel="noopener">
-      <span class="code"><span>CH-01</span><span>&#9650;</span></span>
-      <span class="name">자소설닷컴</span>
-      <span class="kind">채용 포털</span>
-    </a>
-    <a class="mod" href="https://www.kofia.or.kr/brd/m_96/list.do" target="_blank" rel="noopener">
-      <span class="code"><span>CH-02</span><span>&#9650;</span></span>
-      <span class="name">금융투자협회</span>
-      <span class="kind">협회 공시</span>
-    </a>
-    <a class="mod relay" href="https://cafe.naver.com/f-e/cafes/15279069/menus/604" target="_blank" rel="noopener">
-      <span class="code"><span>CH-03</span><span>&#9670;</span></span>
-      <span class="name">KKB</span>
-      <span class="kind">카페 중계</span>
-    </a>
-    <a class="mod relay" href="https://cafe.naver.com/grefi" target="_blank" rel="noopener">
-      <span class="code"><span>CH-04</span><span>&#9670;</span></span>
-      <span class="name">도부융</span>
-      <span class="kind">카페 중계</span>
-    </a>
-    <a class="mod relay" href="https://cafe.naver.com/dokkm/3109598" target="_blank" rel="noopener">
-      <span class="code"><span>CH-05</span><span>&#9670;</span></span>
-      <span class="name">독금사</span>
-      <span class="kind">카페 중계</span>
-    </a>
-    <a class="mod relay" href="https://cafe.naver.com/grefi" target="_blank" rel="noopener">
-      <span class="code"><span>CH-06</span><span>&#9670;</span></span>
-      <span class="name">P&amp;P</span>
-      <span class="kind">카페 중계 · CH-04 공용</span>
-    </a>
-    <a class="mod" href="https://www.saramin.co.kr/zf_user/jobs/list/domestic?loc_mcd=101000&amp;cat_kewd=1712%2C1744%2C1746%2C1720%2C1715%2C1697&amp;panel_type=&amp;search_optional_item=n&amp;search_done=y&amp;panel_count=y&amp;preview=y&amp;page=1" target="_blank" rel="noopener">
-      <span class="code"><span>CH-07</span><span>&#9650;</span></span>
-      <span class="name">사람인</span>
-      <span class="kind">채용 포털 · 필터 적용</span>
-    </a>
-    <a class="mod" href="https://job.incruit.com/jobdb_list/searchjob.asp?jobty=4&amp;rgn2=11" target="_blank" rel="noopener">
-      <span class="code"><span>CH-08</span><span>&#9650;</span></span>
-      <span class="name">인크루트</span>
-      <span class="kind">채용 포털 · 서울</span>
-    </a>
-    <a class="mod" href="https://www.jobkorea.co.kr/recruit/joblist?menucode=duty" target="_blank" rel="noopener">
-      <span class="code"><span>CH-09</span><span>&#9650;</span></span>
-      <span class="name">잡코리아</span>
-      <span class="kind">채용 포털</span>
-    </a>
-    <a class="mod manual" href="https://blog.naver.com/careerhighofficial" target="_blank" rel="noopener">
-      <span class="code"><span>CH-10</span><span>&#9679;</span></span>
-      <span class="name">커리어하이</span>
-      <span class="kind">수동 관측 · 블로그</span>
-    </a>
-    <a class="mod manual" href="https://planning.cau.ac.kr/bbs/board.php?tbl=jobboard" target="_blank" rel="noopener">
-      <span class="code"><span>CH-11</span><span>&#9679;</span></span>
-      <span class="name">학과 게시판</span>
-      <span class="kind">수동 관측 · 중앙대</span>
-    </a>
-    <a class="mod manual" href="https://inthiswork.com/" target="_blank" rel="noopener">
-      <span class="code"><span>CH-12</span><span>&#9679;</span></span>
-      <span class="name">인디스워크</span>
-      <span class="kind">수동 관측 · 공고 모음</span>
-    </a>
-  </nav>
-
-  <footer>
-    <div class="legend">
-      <span><i style="background:#2b7f9e" aria-hidden="true"></i>상시 포털</span>
-      <span><i style="background:#6c4da3" aria-hidden="true"></i>카페 중계</span>
-      <span><i style="background:#99662a" aria-hidden="true"></i>수동 관측</span>
-    </div>
-    <div>CH-04 / CH-06 동일 좌표 (cafe.naver.com/grefi)</div>
-  </footer>
-</div>
+<nav class="bay">
+  <a class="mod" href="https://jasoseol.com/recruit" target="_blank" rel="noopener">자소설닷컴</a>
+  <a class="mod" href="https://www.kofia.or.kr/brd/m_96/list.do" target="_blank" rel="noopener">금융투자협회</a>
+  <a class="mod relay" href="https://cafe.naver.com/f-e/cafes/15279069/menus/604" target="_blank" rel="noopener">KKB</a>
+  <a class="mod relay" href="https://cafe.naver.com/grefi" target="_blank" rel="noopener">도부융</a>
+  <a class="mod relay" href="https://cafe.naver.com/dokkm/3109598" target="_blank" rel="noopener">독금사</a>
+  <a class="mod relay" href="https://cafe.naver.com/grefi" target="_blank" rel="noopener">P&amp;P</a>
+  <a class="mod" href="https://www.saramin.co.kr/zf_user/jobs/list/domestic?loc_mcd=101000&amp;cat_kewd=1712%2C1744%2C1746%2C1720%2C1715%2C1697&amp;panel_type=&amp;search_optional_item=n&amp;search_done=y&amp;panel_count=y&amp;preview=y&amp;page=1" target="_blank" rel="noopener">사람인</a>
+  <a class="mod" href="https://job.incruit.com/jobdb_list/searchjob.asp?jobty=4&amp;rgn2=11" target="_blank" rel="noopener">인크루트</a>
+  <a class="mod" href="https://www.jobkorea.co.kr/recruit/joblist?menucode=duty" target="_blank" rel="noopener">잡코리아</a>
+  <a class="mod manual" href="https://blog.naver.com/careerhighofficial" target="_blank" rel="noopener">커리어하이</a>
+  <a class="mod manual" href="https://planning.cau.ac.kr/bbs/board.php?tbl=jobboard" target="_blank" rel="noopener">학과 홈페이지</a>
+  <a class="mod manual" href="https://inthiswork.com/" target="_blank" rel="noopener">인디스워크</a>
+</nav>
