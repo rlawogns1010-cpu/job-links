@@ -1,0 +1,219 @@
+<title>취업공고 초콜릿</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=IBM+Plex+Sans+KR:wght@400;500;600&display=swap">
+<style>
+  /* 레이아웃: 금박 포일 위에 놓인 초콜릿 바 한 판 — 조각 하나가 공고 사이트 하나 */
+  :root {
+    --cocoa-deep: #1b1008;
+    --cocoa: #4a2c17;
+    --cocoa-mid: #5d3a1f;
+    --cocoa-light: #7d5130;
+    --foil: #cfa84e;
+    --foil-pale: #f0dcae;
+    --cream: #f6ecd8;
+    --font-display: "Gowun Batang", "Nanum Myeongjo", Georgia, serif;
+    --font-body: "IBM Plex Sans KR", "Apple SD Gothic Neo", system-ui, sans-serif;
+    color-scheme: dark;
+  }
+
+  body {
+    background:
+      radial-gradient(120% 80% at 50% 0%, #2a1a0d 0%, transparent 60%),
+      var(--cocoa-deep);
+    color: var(--cream);
+    font-family: var(--font-body);
+    min-height: 100%;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap {
+    max-width: 640px;
+    margin: 0 auto;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+    padding-block: 32px 48px;
+  }
+
+  header { text-align: center; display: flex; flex-direction: column; gap: 10px; }
+  .eyebrow {
+    font-size: 11px;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    color: var(--foil);
+  }
+  h1 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(28px, 8vw, 40px);
+    margin: 0;
+    line-height: 1.15;
+    text-wrap: balance;
+    color: var(--foil-pale);
+  }
+  .sub { margin: 0; font-size: 13px; line-height: 1.7; color: #c7ab83; }
+
+  /* 포일: 초콜릿 바를 감싼 금박 */
+  .foil {
+    margin-top: 28px;
+    padding: 14px;
+    border-radius: 14px;
+    background:
+      repeating-linear-gradient(104deg, rgba(255,255,255,.14) 0 2px, transparent 2px 7px),
+      linear-gradient(160deg, #a4812f 0%, #e8cf8d 28%, #8f6a21 55%, #dcc078 78%, #9a7528 100%);
+    box-shadow: 0 18px 44px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.4);
+  }
+
+  .bar {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 7px;
+    padding: 7px;
+    border-radius: 6px;
+    background: var(--cocoa-deep);
+  }
+  @media (min-width: 480px) { .bar { grid-template-columns: repeat(3, 1fr); } }
+
+  /* 조각: 몰드에서 막 꺼낸 한 칸 */
+  .piece {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 3px;
+    min-width: 0;
+    aspect-ratio: 1 / .78;
+    max-width: 100%;
+    padding: 10px 11px 11px;
+    border: 0;
+    border-radius: 4px;
+    text-decoration: none;
+    color: var(--cream);
+    background: linear-gradient(158deg, var(--cocoa-light) 0%, var(--cocoa-mid) 42%, var(--cocoa) 100%);
+    box-shadow:
+      inset 2px 2px 0 rgba(255,236,210,.22),
+      inset -2px -3px 0 rgba(0,0,0,.42),
+      0 2px 5px rgba(0,0,0,.45);
+    transition: transform .18s ease, box-shadow .18s ease, filter .18s ease;
+  }
+  .piece::after {
+    content: "";
+    position: absolute;
+    inset: 4px;
+    border-radius: 2px;
+    box-shadow: inset 1px 1px 0 rgba(255,236,210,.1), inset -1px -1px 0 rgba(0,0,0,.25);
+    pointer-events: none;
+  }
+  .piece:hover, .piece:focus-visible {
+    transform: translateY(-2px);
+    filter: brightness(1.1);
+    box-shadow:
+      inset 2px 2px 0 rgba(255,236,210,.3),
+      inset -2px -3px 0 rgba(0,0,0,.42),
+      0 8px 16px rgba(0,0,0,.5);
+  }
+  .piece:focus-visible { outline: 2px solid var(--foil-pale); outline-offset: 3px; }
+  .piece:active { transform: translateY(1px) scale(.985); }
+
+  .piece .name {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(14px, 4.2vw, 17px);
+    line-height: 1.25;
+    letter-spacing: -.01em;
+    text-shadow: 0 1px 0 rgba(0,0,0,.55), 0 -1px 0 rgba(255,236,210,.14);
+    overflow-wrap: anywhere;
+  }
+  .piece .kind {
+    font-size: 10px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: rgba(240,220,174,.62);
+  }
+
+  /* 카페 공고는 조금 더 진한 다크 초콜릿 */
+  .piece.cafe {
+    background: linear-gradient(158deg, #4b2d18 0%, #35200f 48%, #241508 100%);
+  }
+  /* 블로그·학과는 밀크 초콜릿 */
+  .piece.milk {
+    background: linear-gradient(158deg, #a9743f 0%, #8b5c2d 45%, #6b451f 100%);
+  }
+
+  footer {
+    margin-top: 26px;
+    text-align: center;
+    font-size: 12px;
+    line-height: 1.8;
+    color: #9c825f;
+  }
+  footer .hint { display: block; }
+  @media (prefers-reduced-motion: reduce) {
+    .piece { transition: none; }
+  }
+</style>
+
+<div class="wrap">
+  <header>
+    <span class="eyebrow">금융·자산운용 채용</span>
+    <h1>취업공고 초콜릿</h1>
+    <p class="sub">한 조각씩 눌러서 공고 사이트로. 매일 한 판 돌려보면 끝.</p>
+  </header>
+
+  <div class="foil">
+    <div class="bar">
+      <a class="piece" href="https://jasoseol.com/recruit" target="_blank" rel="noopener">
+        <span class="kind">채용 포털</span>
+        <span class="name">자소설닷컴</span>
+      </a>
+      <a class="piece" href="https://www.kofia.or.kr/brd/m_96/list.do" target="_blank" rel="noopener">
+        <span class="kind">협회</span>
+        <span class="name">금융투자협회</span>
+      </a>
+      <a class="piece cafe" href="https://cafe.naver.com/f-e/cafes/15279069/menus/604" target="_blank" rel="noopener">
+        <span class="kind">카페</span>
+        <span class="name">KKB</span>
+      </a>
+      <a class="piece cafe" href="https://cafe.naver.com/grefi" target="_blank" rel="noopener">
+        <span class="kind">카페</span>
+        <span class="name">도부융</span>
+      </a>
+      <a class="piece cafe" href="https://cafe.naver.com/dokkm/3109598" target="_blank" rel="noopener">
+        <span class="kind">카페</span>
+        <span class="name">독금사</span>
+      </a>
+      <a class="piece cafe" href="https://cafe.naver.com/grefi" target="_blank" rel="noopener">
+        <span class="kind">카페</span>
+        <span class="name">P&amp;P</span>
+      </a>
+      <a class="piece" href="https://www.saramin.co.kr/zf_user/jobs/list/domestic?loc_mcd=101000&amp;cat_kewd=1712%2C1744%2C1746%2C1720%2C1715%2C1697&amp;panel_type=&amp;search_optional_item=n&amp;search_done=y&amp;panel_count=y&amp;preview=y&amp;page=1" target="_blank" rel="noopener">
+        <span class="kind">채용 포털</span>
+        <span class="name">사람인</span>
+      </a>
+      <a class="piece" href="https://job.incruit.com/jobdb_list/searchjob.asp?jobty=4&amp;rgn2=11" target="_blank" rel="noopener">
+        <span class="kind">채용 포털</span>
+        <span class="name">인크루트</span>
+      </a>
+      <a class="piece" href="https://www.jobkorea.co.kr/recruit/joblist?menucode=duty" target="_blank" rel="noopener">
+        <span class="kind">채용 포털</span>
+        <span class="name">잡코리아</span>
+      </a>
+      <a class="piece milk" href="https://blog.naver.com/careerhighofficial" target="_blank" rel="noopener">
+        <span class="kind">블로그</span>
+        <span class="name">커리어하이</span>
+      </a>
+      <a class="piece milk" href="https://planning.cau.ac.kr/bbs/board.php?tbl=jobboard" target="_blank" rel="noopener">
+        <span class="kind">학과 게시판</span>
+        <span class="name">학과 홈페이지</span>
+      </a>
+      <a class="piece milk" href="https://inthiswork.com/" target="_blank" rel="noopener">
+        <span class="kind">공고 모음</span>
+        <span class="name">인디스워크</span>
+      </a>
+    </div>
+  </div>
+
+  <footer>
+    <span class="hint">12조각 · 다크는 네이버 카페, 밀크는 블로그·게시판</span>
+    <span class="hint">도부융과 P&amp;P는 같은 카페(grefi)를 씁니다.</span>
+  </footer>
+</div>
